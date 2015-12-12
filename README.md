@@ -10,7 +10,7 @@ This command finds commands in the system PATH using regular expressions
 code yourself
 
 ## Files and description ##
-scripts/ - simple shell scripts for managing the project.
-uncrustify/ - uncristify configuration file used in.
-Makefile  - fcmd compile recipe.
+ - scripts/ - simple shell scripts for managing the project.
+ - uncrustify/ - uncristify configuration file used in.
+ - Makefile  - fcmd compile recipe.
 
