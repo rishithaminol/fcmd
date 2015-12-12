@@ -14,3 +14,9 @@ code yourself
  - uncrustify/ - uncristify configuration file used in.
  - Makefile  - fcmd compile recipe.
 
+## Installation ##
+```
+make
+make install
+```
+fcmd executable is installed into the `/usr/bin`
