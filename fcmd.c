@@ -26,6 +26,7 @@
 #include <assert.h>             /*	assert() */
 
 #define REGEX_MSG_BUFF 256      /* 'char regex_msg[REGEX_MSG_BUFF]' */
+#define is_ndir(X) !is_dir(X)
 
 /*Program name*/
 char *prog_name;
@@ -322,7 +323,7 @@ struct list *match_file_list(const char *dir_name, regex_t *regex)
 	while ((dir = readdir(pdir)) != NULL) {
 		regex_return = regexec(regex, dir->d_name, 0, NULL, 0);
 
-		if (regex_return == 0 && !is_dir(dir))
+		if (regex_return == 0 && is_ndir(dir))
 			matched_list = list_append(matched_list, dir->d_name);
 	}
 
