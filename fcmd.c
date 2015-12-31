@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	prog_name = *argv;
 
 	if (argc < 2) {
-		fprintf(stderr, "Too few arguments\n");
+		fprintf(stderr, "%s: Too few arguments\n", prog_name);
 		usage(EXIT_FAILURE);
 	}
 
