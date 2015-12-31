@@ -39,7 +39,7 @@ struct list *list_allocate(void);
 struct list *list_append(struct list *_list, const char *str);
 int list_count(struct list *_list);
 void list_clean(struct list *_list);
-void list_free(struct list *_list);
+/*void list_free(struct list *_list);*/
 char *list_element(struct list *_list, int pos);
 const char **list_to_array(struct list *_list);
 struct list *array_to_list(char **array);
@@ -156,14 +156,14 @@ void list_clean(struct list *_list)
 /*
  * Free list pointers
  */
-void list_free(struct list *_list)
+/*void list_free(struct list *_list)
 {
 	if (_list->next != NULL)
 		list_free(_list->next);
 
 	free(_list);
 	_list = NULL;
-}
+}*/
 
 /*
  * return pointer to '_list->content' element in 'pos' position
