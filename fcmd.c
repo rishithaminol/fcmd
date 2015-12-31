@@ -38,7 +38,7 @@ struct list {
 struct list *list_allocate(void);
 struct list *list_append(struct list *_list, const char *str);
 int list_count(struct list *_list);
-void list_clean(struct list *_list);
+void list_free(struct list *_list);
 /*void list_free(struct list *_list);*/
 char *list_element(struct list *_list, int pos);
 const char **list_to_array(struct list *_list);
@@ -86,10 +86,10 @@ int main(int argc, char *argv[])
 		def = list_count(matched_list);
 		for (abc = 1; abc <= def; abc++)
 			printf("%s/%s\n", dir_name, list_element(matched_list, abc));
-		list_clean(matched_list);
+		list_free(matched_list);
 	}
 	regfree(&regex);
-	list_clean(path_list);
+	list_free(path_list);
 
 	return 0;
 }
@@ -141,12 +141,12 @@ int list_count(struct list *_list)
 /*
  * Free list pointers and their pointed objects
  */
-void list_clean(struct list *_list)
+void list_free(struct list *_list)
 {
 	assert(_list != NULL /*strcmp(_list->content, "")*/);
 
 	if (_list->next != NULL)
-		list_clean(_list->next);
+		list_free(_list->next);
 
 	free(_list->content);
 	free(_list);
