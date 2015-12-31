@@ -50,7 +50,7 @@ DIR *fcmd_opendir(const char *directory);
 struct list *match_file_list(const char *dir_name, regex_t *regex);
 int is_dir(struct dirent *dir);
 regex_t compile_regex(const char *str);
-void usage(void);
+void usage(int x);
 
 int main(int argc, char *argv[])
 {
@@ -64,8 +64,7 @@ int main(int argc, char *argv[])
 
 	if (argc < 2) {
 		fprintf(stderr, "Too few arguments\n");
-		usage();
-		exit(EXIT_FAILURE);
+		usage(EXIT_FAILURE);
 	}
 
 	path = getenv("PATH");
@@ -352,9 +351,11 @@ regex_t compile_regex(const char *str)
 	return regex;
 }
 
-void usage(void)
+void usage(int x)
 {
 	printf("Usage: fcmd [OPTIONS] command\n\n" 
 		"For bug reporting\n"
 		"<lucidminol@gmail.com>\n");
+
+	exit(x);
 }
