@@ -356,7 +356,7 @@ void usage(int x)
 {
 	printf("Usage: fcmd [OPTIONS] command\n\n" 
 		"For bug reporting\n"
-		"<lucidminol@gmail.com>\n");
+		"<rishithaminol@gmail.com>\n");
 
 	exit(x);
 }
