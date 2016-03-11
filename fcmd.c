@@ -72,7 +72,8 @@ int main(int argc, char *argv[])
 	assert(path != NULL);
 	path_list = tokenize(path, ":");
 
-	compile_regex(&regex, argv[1]);
+	if(compile_regex(&regex, argv[1]))
+		goto wind_up;
 
 	n = array_count(path_list);
 	for (i = 1; i <= n; i++) {
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
 			printf("%s/%s\n", dir_name, get_element(matched_list, abc));
 		array_free(matched_list);
 	}
+
+wind_up:
 	regfree(&regex);
 	array_free(path_list);
 
