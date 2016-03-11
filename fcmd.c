@@ -50,7 +50,7 @@ struct str_array *tokenize(char *string, const char *delim);
 DIR *fcmd_opendir(const char *directory);
 struct str_array *match_file_list(const char *dir_name, regex_t *regex);
 int is_dir(struct dirent *dir);
-regex_t compile_regex(const char *str);
+int compile_regex(regex_t *regex, const char *str);
 void usage(int x);
 
 int main(int argc, char *argv[])
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	assert(path != NULL);
 	path_list = tokenize(path, ":");
 
-	regex = compile_regex(argv[1]);
+	compile_regex(&regex, argv[1]);
 
 	n = array_count(path_list);
 	for (i = 1; i <= n; i++) {
@@ -335,21 +335,19 @@ struct str_array *match_file_list(const char *dir_name, regex_t *regex)
 /*
  * compile and return the regex_t(regular expression) for the given string
  */
-regex_t compile_regex(const char *str)
+int compile_regex(regex_t *regex, const char *str)
 {
 	int ret;
 	char regex_msg[REGEX_MSG_BUFF];
-	regex_t regex;
 
-	ret = regcomp(&regex, str, REG_EXTENDED);
+	ret = regcomp(regex, str, REG_EXTENDED);
 
 	if (ret) {
-		regerror(ret, &regex, regex_msg, sizeof(regex_msg));
+		regerror(ret, regex, regex_msg, sizeof(regex_msg));
 		fprintf(stderr, "%s: %s\n", prog_name, regex_msg);
-		exit(ret);
 	}
 
-	return regex;
+	return ret;
 }
 
 void usage(int x)
