@@ -36,12 +36,12 @@ struct str_array {
 	struct str_array *next;
 };
 
-struct str_array *list_allocate(void);
-struct str_array *list_append(struct str_array *_list, const char *str);
-int list_count(struct str_array *_list);
-void list_free(struct str_array *_list);
-/*void list_free(struct str_array *_list);*/
-char *list_element(struct str_array *_list, int pos);
+struct str_array *array_allocate(void);
+struct str_array *array_append(struct str_array *_list, const char *str);
+int array_count(struct str_array *_list);
+void array_free(struct str_array *_list);
+/*void array_free(struct str_array *_list);*/
+char *get_element(struct str_array *_list, int pos);
 const char **list_to_array(struct str_array *_list);
 struct str_array *array_to_list(char **array);
 void swap_str(const char **x, const char **y);
@@ -74,27 +74,27 @@ int main(int argc, char *argv[])
 
 	regex = compile_regex(argv[1]);
 
-	n = list_count(path_list);
+	n = array_count(path_list);
 	for (i = 1; i <= n; i++) {
-		dir_name = list_element(path_list, i);
+		dir_name = get_element(path_list, i);
 
 		if ((matched_list = match_file_list(dir_name, &regex)) == NULL)
 			continue;
 
 		int abc, def;
 
-		def = list_count(matched_list);
+		def = array_count(matched_list);
 		for (abc = 1; abc <= def; abc++)
-			printf("%s/%s\n", dir_name, list_element(matched_list, abc));
-		list_free(matched_list);
+			printf("%s/%s\n", dir_name, get_element(matched_list, abc));
+		array_free(matched_list);
 	}
 	regfree(&regex);
-	list_free(path_list);
+	array_free(path_list);
 
 	return 0;
 }
 
-struct str_array *list_allocate(void)
+struct str_array *array_allocate(void)
 {
 	return (struct str_array *)malloc(sizeof(struct str_array));
 }
@@ -103,10 +103,10 @@ struct str_array *list_allocate(void)
  * Take old list, duplicate str to the end
  * of the old list and return new list
  */
-struct str_array *list_append(struct str_array *_list, const char *str)
+struct str_array *array_append(struct str_array *_list, const char *str)
 {
 	struct str_array *list_head = _list;
-	struct str_array *tmp = list_allocate();
+	struct str_array *tmp = array_allocate();
 
 	tmp->content = strdup(str);
 	tmp->next = NULL;
@@ -128,25 +128,25 @@ struct str_array *list_append(struct str_array *_list, const char *str)
 /*
  * return the number of elements in a 'struct str_array *'
  */
-int list_count(struct str_array *_list)
+int array_count(struct str_array *_list)
 {
 	assert(_list != NULL);
 
 	if (_list->next == NULL)
 		return 1;
 
-	return 1 + list_count(_list->next);
+	return 1 + array_count(_list->next);
 }
 
 /*
  * Free list pointers and their pointed objects
  */
-void list_free(struct str_array *_list)
+void array_free(struct str_array *_list)
 {
 	assert(_list != NULL /*strcmp(_list->content, "")*/);
 
 	if (_list->next != NULL)
-		list_free(_list->next);
+		array_free(_list->next);
 
 	free(_list->content);
 	free(_list);
@@ -156,10 +156,10 @@ void list_free(struct str_array *_list)
 /*
  * Free list pointers
  */
-/*void list_free(struct str_array *_list)
+/*void array_free(struct str_array *_list)
 {
 	if (_list->next != NULL)
-		list_free(_list->next);
+		array_free(_list->next);
 
 	free(_list);
 	_list = NULL;
@@ -168,10 +168,10 @@ void list_free(struct str_array *_list)
 /*
  * return pointer to '_list->content' element in 'pos' position
  */
-char *list_element(struct str_array *_list, int pos)
+char *get_element(struct str_array *_list, int pos)
 {
 	int i;
-	int list_len = list_count(_list);
+	int list_len = array_count(_list);
 
 	if (list_len < pos)
 		return NULL;
@@ -189,7 +189,7 @@ const char **list_to_array(struct str_array *_list)
 {
 	int i, x;
 
-	x = list_count(_list);
+	x = array_count(_list);
 	const char **array = (const char **)malloc(sizeof(char *) * x);
 
 	for (i = 0; i < x; i++) {
@@ -210,7 +210,7 @@ struct str_array *array_to_list(char **array)
 
 	elements = (malloc_usable_size(array) / sizeof(char *));
 
-	tmp = list_allocate();
+	tmp = array_allocate();
 	list_return = tmp;
 
 	for (i = 0; i < elements; i++) {
@@ -219,7 +219,7 @@ struct str_array *array_to_list(char **array)
 		if (i + 1 == elements)
 			break;
 
-		tmp->next = list_allocate();
+		tmp->next = array_allocate();
 		tmp = tmp->next;
 	}
 	tmp->next = NULL;
@@ -246,7 +246,7 @@ void swap_str(const char **x, const char **y)
 const char **array_sort(struct str_array *_list)
 {
 	const char **array = list_to_array(_list);
-	int x = list_count(_list);
+	int x = array_count(_list);
 	int c, d;
 
 	for (c = 1; c <= x - 1; c++)
@@ -270,7 +270,7 @@ struct str_array *tokenize(char *string, const char *delim)
 	str_free = str;
 
 	while ((token = strsep(&str, delim)) != NULL) {
-		str_list = list_append(str_list, token);
+		str_list = array_append(str_list, token);
 
 		if (str == NULL)
 			break;
@@ -324,7 +324,7 @@ struct str_array *match_file_list(const char *dir_name, regex_t *regex)
 		regex_return = regexec(regex, dir->d_name, 0, NULL, 0);
 
 		if (regex_return == 0 && is_ndir(dir))
-			matched_list = list_append(matched_list, dir->d_name);
+			matched_list = array_append(matched_list, dir->d_name);
 	}
 
 	closedir(pdir);
