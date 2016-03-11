@@ -45,7 +45,7 @@ char *list_element(struct str_array *_list, int pos);
 const char **list_to_array(struct str_array *_list);
 struct str_array *array_to_list(char **array);
 void swap_str(const char **x, const char **y);
-const char **list_sort(struct str_array *_list);
+const char **array_sort(struct str_array *_list);
 struct str_array *tokenize(char *string, const char *delim);
 DIR *fcmd_opendir(const char *directory);
 struct str_array *match_file_list(const char *dir_name, regex_t *regex);
@@ -243,7 +243,7 @@ void swap_str(const char **x, const char **y)
  * Sorts given 'struct str_array *'
  *		- Insertion algorithm
  */
-const char **list_sort(struct str_array *_list)
+const char **array_sort(struct str_array *_list)
 {
 	const char **array = list_to_array(_list);
 	int x = list_count(_list);
