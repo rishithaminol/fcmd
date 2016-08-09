@@ -296,10 +296,8 @@ DIR *fcmd_opendir(const char *directory)
 	pdir = opendir(directory);
 	errnum = errno;         /* errno --> $? in shell */
 
-	if (pdir == NULL) {
-		fprintf(stderr, "%s: %s\n", prog_name, strerror(errnum));
-		exit(errnum);
-	}
+	if (pdir == NULL)
+		fprintf(stderr, "%s: '%s' %s\n", prog_name, directory, strerror(errnum));
 
 	return pdir;
 }
@@ -322,6 +320,9 @@ struct str_array *match_file_list(const char *dir_name, regex_t *regex)
 	struct str_array *matched_list = NULL;
 	struct dirent *dir;
 	DIR *pdir = fcmd_opendir(dir_name);
+
+	if (pdir == NULL)
+		return NULL;
 
 	while ((dir = readdir(pdir)) != NULL) {
 		regex_return = regexec(regex, dir->d_name, 0, NULL, 0);
