@@ -27,6 +27,7 @@
 
 #define REGEX_MSG_BUFF 256      /* 'char regex_msg[REGEX_MSG_BUFF]' */
 #define is_ndir(X) !is_dir(X)
+#define VERSION "0.1"
 
 /*Program name*/
 char *prog_name;
@@ -358,7 +359,8 @@ void usage(int x)
 {
 	printf("Usage: fcmd [OPTIONS] command\n\n" 
 		"For bug reporting\n"
-		"<rishithaminol@gmail.com>\n");
+		"Version %s\n"
+		"<rishithaminol@gmail.com>\n", VERSION);
 
 	exit(x);
 }

@@ -2,3 +2,8 @@
 /test.c
 /test
 
+/configure
+aclocal.m4
+autom4te.cache
+config.log
+build/

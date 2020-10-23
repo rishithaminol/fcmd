@@ -1,5 +1,5 @@
-PREFIX=/usr
-BINDIR=$(PREFIX)/bin
+PREFIX=/usr/bin
+BINDIR=$(PREFIX)
 CFLAGS=-Wall
 CFLAGS+=-g
 
@@ -8,7 +8,7 @@ all: fcmd
 fcmd: fcmd.c
 
 install: all
-	cp fcmd $(BINDIR)
+	cp fcmd $(DESTDIR)
 
 uninstall:
 	rm -f $(BINDIR)/fcmd
