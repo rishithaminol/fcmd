@@ -27,7 +27,7 @@
 
 #define REGEX_MSG_BUFF 256      /* 'char regex_msg[REGEX_MSG_BUFF]' */
 #define is_ndir(X) !is_dir(X)
-#define VERSION "0.1"
+#define VERSION "0.2"
 
 /*Program name*/
 char *prog_name;
